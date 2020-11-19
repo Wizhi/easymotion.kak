@@ -1,8 +1,8 @@
-declare-option -hidden range-specs easymotion_ranges
+declare-option -hidden range-specs easymotion_ranges # for ranges
 declare-option -hidden str easymotion_lua %sh{printf "%s" "${kak_source%.kak}.lua"}
-declare-option -hidden str easymotion_window
-declare-option -hidden str easymotion_keys
-declare-option -hidden str-to-str-map easymotion_map
+declare-option -hidden str easymotion_window # for window content
+declare-option -hidden str easymotion_keys # XXX for on-key magic
+declare-option -hidden str easymotion_jump # store the counter for operations
 
 declare-option str easymotion_chars 'jfkdlsahgurieowpqzt'
 
@@ -16,34 +16,33 @@ hook -group easymotion global ModeChange pop:next-key\[on-key\]:normal %{
     remove-highlighter window/easymotion
 }
 
-define-command -hidden -params 0 easymotion-forward %{
+define-command -hidden -params 1 easymotion-forward %{
     evaluate-commands -draft %{
-        execute-keys <semicolon> Gb Gl
+        execute-keys <space> <semicolon> Gb Gl
         evaluate-commands %{
             #echo -debug "kak_selection: %val{selection}"
             set-option window easymotion_window %val{selection}
         }
     }
-    easymotion-worker 1
+    easymotion-worker %arg{@} 1
 }
 
-define-command -hidden -params 0 easymotion-backward %{
+define-command -hidden -params 1 easymotion-backward %{
     evaluate-commands -draft %{
-        execute-keys <semicolon> Gt Gh
+        execute-keys <space> <semicolon> Gt Gh
         evaluate-commands %{
             #echo -debug "kak_selection: %val{selection}"
             set-option window easymotion_window %val{selection}
         }
     }
-    easymotion-worker -1
+    easymotion-worker %arg{@} -1
 }
 
-define-command -hidden -params 1 easymotion-worker %{
+define-command -hidden -params 2 easymotion-worker %{
     evaluate-commands %sh{
         # NOTE: comments below are intentional to make kakoune export them
-        # kak_session
-        # kak_easymotion_chars
-        printf %s "$kak_opt_easymotion_window" |lua "$kak_opt_easymotion_lua" "$kak_timestamp" "$kak_cursor_line" "$kak_cursor_column" "$kak_bufname" "$1"  >/dev/null 2>&1
+        # easymotion_chars
+        printf %s "$kak_opt_easymotion_window" |lua "$kak_opt_easymotion_lua" "$kak_timestamp" "$kak_cursor_line" "$kak_cursor_column" "$1" "$2"
     }
 }
 
@@ -59,7 +58,7 @@ define-command -hidden -params 0 easymotion-getKeys %{
 }
 
 define-command easymotion-j -params 0 %{
-    easymotion-forward
+    easymotion-forward lines
     easymotion-getKeys
     echo -debug %opt{easymotion_keys}
 }
@@ -67,6 +66,10 @@ define-command easymotion-j -params 0 %{
 declare-user-mode easymotion
 
 map global easymotion -docstring %{easymotion line down} <j> ": easymotion-j<ret>"
+
+# Remove these lines before release
+
+map global normal <ű> ': enter-user-mode easymotion'
 
 §
 
