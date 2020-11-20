@@ -65,7 +65,7 @@ local function markLines()
 	for k, v in ipairs(lines) do
 		if #v ~= 0 then
 			local keys = getKeys(k)
-			table.insert( ranges, string.format( '%s.1+2|{Error}%s', kak_line+(direction*k)-1, keys) )
+			table.insert( ranges, string.format( '%s.1+2|{Information}%s', kak_line+(direction*k)-1, keys) )
 		end
 	end
 end
@@ -85,9 +85,9 @@ local function markWords()
 			end
 		end
 		for _,word in ipairs(partition(line)) do
-			if not first_word then
+			if not first_word and string.len(word) > 2 then
 				--print( string.format("Replacing line %d column %d word: %s length: %d count: %d", kak_line, kak_column, word, #word, count) )
-				table.insert( ranges, string.format( '%s.%s+2|{Error}%s', kak_line, kak_column, getKeys(count) ) )
+				table.insert( ranges, string.format( '%s.%s+2|{Information}%s', kak_line, kak_column, getKeys(count) ) )
 			end
 			if #word ~= 0 then
 				count = count + 1

@@ -44,6 +44,8 @@ define-command -hidden -params 2 easymotion-worker %{
         # easymotion_chars
         printf %s "$kak_opt_easymotion_window" |lua "$kak_opt_easymotion_lua" "$kak_timestamp" "$kak_cursor_line" "$kak_cursor_column" "$1" "$2"
     }
+    # XXX: this should be a hook
+    try %{ add-highlighter window/easymotion replace-ranges 'easymotion_ranges' }
 }
 
 define-command -hidden -params 0 easymotion-getKeys %{
@@ -59,13 +61,20 @@ define-command -hidden -params 0 easymotion-getKeys %{
 
 define-command easymotion-j -params 0 %{
     easymotion-forward lines
-    easymotion-getKeys
-    echo -debug %opt{easymotion_keys}
 }
+
+define-command easymotion-w -params 0 %{
+    easymotion-forward words
+}
+
+
 
 declare-user-mode easymotion
 
 map global easymotion -docstring %{easymotion line down} <j> ": easymotion-j<ret>"
+map global easymotion -docstring %{easymotion line up} <k> ": easymotion-k<ret>"
+map global easymotion -docstring %{easymotion word forward} <w> ": easymotion-w<ret>"
+map global easymotion -docstring %{easymotion word backward} <b> ": easymotion-b<ret>"
 
 # Remove these lines before release
 
