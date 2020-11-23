@@ -65,8 +65,8 @@ local function markLines()
 	for k, v in ipairs(lines) do
 		if #v ~= 0 and k ~= 1 then
 			local keys = getKeys(k-1)
-			--print(k, keys)
-			table.insert( ranges, string.format( '%s.1+2|{Information}%s', kak_line+(direction*k)-1, keys) )
+			--print(k, keys, v)
+			table.insert( ranges, string.format( '%s.1+2|{Information}%s', kak_line+(direction*k)-direction, keys) )
 		end
 	end
 end
