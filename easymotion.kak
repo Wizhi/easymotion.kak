@@ -8,11 +8,7 @@ declare-option str easymotion_chars 'jfkdlsahgurieowpqzt'
 
 provide-module easymotion %§
 
-hook -group easymotion global ModeChange push:normal:next-key\[on-key\] %{
-    try %{ add-highlighter window/easymotion replace-ranges 'easymotion_ranges' }
-}
-
-hook -group easymotion global ModeChange pop:next-key\[on-key\]:normal %{
+hook -group easymotion global ModeChange pop:prompt:normal %{
     remove-highlighter window/easymotion
 }
 
@@ -41,44 +37,57 @@ define-command -hidden -params 1 easymotion-backward %{
 define-command -hidden -params 2 easymotion-worker %{
     evaluate-commands %sh{
         # NOTE: comments below are intentional to make kakoune export them
-        # easymotion_chars
+        # kak_opt_easymotion_chars
         printf %s "$kak_opt_easymotion_window" |lua "$kak_opt_easymotion_lua" "$kak_timestamp" "$kak_cursor_line" "$kak_cursor_column" "$1" "$2"
     }
-    # XXX: this should be a hook
+    # It can not be a hook as it would be triggered on every prompt command
     try %{ add-highlighter window/easymotion replace-ranges 'easymotion_ranges' }
 }
 
-define-command -hidden -params 0 easymotion-getKeys %{
-    on-key %{
-        set-option window easymotion_keys %val{key}
-    }
-    hook -once -group easymotion window NormalIdle .* %{
-        on-key %{
-            set-option -add window easymotion_keys %val{key}
+define-command -hidden -params 1 easymotion-doJump %{
+    # XXX: -on-change: autojump: jump when 2 keys pressed
+    # XXX: -on-change: limit highlights based on input
+    prompt -on-change 'echo -debug %val{text}' 'easymotion: ' %{
+        echo -debug %val{text}
+        evaluate-commands %sh{
+            # NOTE: comments below are intentional to make kakoune export them
+            # kak_opt_easymotion_chars
+            printf "set-option window easymotion_jump %s\n" $(lua "$kak_opt_easymotion_lua" "$kak_text")
         }
+        execute-keys %opt{easymotion_jump} %arg{1}
     }
 }
 
 define-command easymotion-j -params 0 %{
     easymotion-forward lines
+    easymotion-doJump j
+}
+
+define-command easymotion-k -params 0 %{
+    easymotion-backward lines
+    easymotion-doJump k
 }
 
 define-command easymotion-w -params 0 %{
     easymotion-forward words
+    easymotion-doJump w
 }
 
-
+define-command easymotion-b -params 0 %{
+    easymotion-backward words
+    easymotion-doJump b
+}
 
 declare-user-mode easymotion
 
-map global easymotion -docstring %{easymotion line down} <j> ": easymotion-j<ret>"
-map global easymotion -docstring %{easymotion line up} <k> ": easymotion-k<ret>"
-map global easymotion -docstring %{easymotion word forward} <w> ": easymotion-w<ret>"
-map global easymotion -docstring %{easymotion word backward} <b> ": easymotion-b<ret>"
+map global easymotion -docstring %{easymotion line ↓} <j> ": easymotion-j<ret>"
+map global easymotion -docstring %{easymotion line ↑} <k> ": easymotion-k<ret>"
+map global easymotion -docstring %{easymotion word →} <w> ": easymotion-w<ret>"
+map global easymotion -docstring %{easymotion word ←} <b> ": easymotion-b<ret>"
 
-# Remove these lines before release
+# XXX Remove these lines before release
 
-map global normal <ű> ': enter-user-mode easymotion'
+map global normal <ű> ': enter-user-mode easymotion<ret>'
 
 §
 

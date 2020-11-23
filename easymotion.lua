@@ -1,7 +1,7 @@
 #!/usr/bin/env lua
 
-if os.getenv("kak_easymotion_chars") then
-	kak_easymotion_chars = os.getenv("kak_easymotion_chars")
+if os.getenv("kak_opt_easymotion_chars") then
+	kak_easymotion_chars = os.getenv("kak_opt_easymotion_chars")
 else
 	kak_easymotion_chars = "abcdefghijklmnopqrstuvwxyz"
 end
@@ -13,7 +13,7 @@ end
 
 if #arg == 1 then
 	-- We are in getCount mode
-	print( string.format("set-option window easymotion_jump %d", getCount(tostring(arg[1]))) )
+	print( getCount(tostring(arg[1])) )
 	os.exit(true)
 end
 
@@ -63,8 +63,9 @@ end
 
 local function markLines()
 	for k, v in ipairs(lines) do
-		if #v ~= 0 then
-			local keys = getKeys(k)
+		if #v ~= 0 and k ~= 1 then
+			local keys = getKeys(k-1)
+			--print(k, keys)
 			table.insert( ranges, string.format( '%s.1+2|{Information}%s', kak_line+(direction*k)-1, keys) )
 		end
 	end
