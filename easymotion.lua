@@ -107,14 +107,17 @@ local function markWords()
 		end
 		for i=loop_start, loop_end, direction do
 			word = line_words[i]
-			if not first_word and string.len(word) > 3 then
-				--print( string.format("Replacing line %d column %d word: %s length: %d count: %d", kak_line, kak_column, word, #word, count) )
-				table.insert( ranges, string.format( '%s.%s+2|{Information}%s', kak_line, kak_column, getKeys(count) ) )
+			if not first_word and utf8.len(word) > 3 then
+				if direction == 1 then
+					table.insert( ranges, string.format( '%s.%s+2|{Information}%s', kak_line, kak_column, getKeys(count) ) )
+				else
+					table.insert( ranges, string.format( '%s.%s+2|{Information}%s', kak_line, kak_column-utf8.len(word)+1, getKeys(count) ) )
+				end
 			end
 			if #word ~= 0 then
 				count = count + 1
 				first_word = false
-				kak_column = kak_column + direction * utf8.len(word) -- XXX: backwards?
+				kak_column = kak_column + direction * utf8.len(word)
 			end
 		end
 		kak_line = kak_line + direction
