@@ -47,17 +47,29 @@ local function partition(str)
 	local word_skip
 	local T = {}
 	for word, space in string.gmatch( str, '(%S*)(%s*)' ) do
+		--print(word, space)
+		--print(#word, #space)
 		-- a word without %p charachter
-		for pre, punc, post in string.gmatch ( word, '(%P*)(%p)(%P*)' ) do
+		for pre, punc, post in string.gmatch ( word, '(%P*)(%p+)(%P*)' ) do
 			-- a word with %p character
+			--print(pre, punc, post)
+			--print(#pre, #punc, #post)
 			word_skip = true
 			if #pre ~= 0 then table.insert(T, pre) end
 			if #punc ~= 0 then table.insert(T, punc) end
 			if #post ~= 0 then table.insert(T, post) end
 		end
-		if not word_skip then table.insert(T, word..space) end
+		if not word_skip then
+			table.insert(T, word..space)
+		else
+			--replace last element with element..space
+			local element = T[#T]
+			table.remove(T)
+			table.insert(T, element..space)
+		end
 		word_skip = false
 	end
+	--print(table.concat(T, '§'))
 	return T
 end
 
@@ -86,7 +98,7 @@ local function markWords()
 			end
 		end
 		for _,word in ipairs(partition(line)) do
-			if not first_word and string.len(word) > 2 then
+			if not first_word and string.len(word) > 3 then
 				--print( string.format("Replacing line %d column %d word: %s length: %d count: %d", kak_line, kak_column, word, #word, count) )
 				table.insert( ranges, string.format( '%s.%s+2|{Information}%s', kak_line, kak_column, getKeys(count) ) )
 			end
