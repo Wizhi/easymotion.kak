@@ -89,7 +89,6 @@ local function markWords()
 	local first_word = true -- do not highlight matches in current word
 	for _,line in ipairs(lines) do
 		if direction == -1 then
-			line = string.reverse(line)
 			if not first_line then
 				kak_column = string.len(line)
 			elseif kak_column > string.len(line) then -- XXX: remove?
@@ -97,7 +96,17 @@ local function markWords()
 				kak_column = kak_column + direction
 			end
 		end
-		for _,word in ipairs(partition(line)) do
+		-- just reorder the words instead of reversing them:
+		-- this way utf8.len() will work
+		line_words = partition(line)
+		local loop_start = 1
+		local loop_end = #line_words
+		if direction == -1 then
+			loop_start = #line_words
+			loop_end = 1
+		end
+		for i=loop_start, loop_end, direction do
+			word = line_words[i]
 			if not first_word and string.len(word) > 3 then
 				--print( string.format("Replacing line %d column %d word: %s length: %d count: %d", kak_line, kak_column, word, #word, count) )
 				table.insert( ranges, string.format( '%s.%s+2|{Information}%s', kak_line, kak_column, getKeys(count) ) )
