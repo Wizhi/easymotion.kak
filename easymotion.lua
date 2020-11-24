@@ -111,13 +111,13 @@ local function markWords()
 				if direction == 1 then
 					table.insert( ranges, string.format( '%s.%s+2|{Information}%s', kak_line, kak_column, getKeys(count) ) )
 				else
-					table.insert( ranges, string.format( '%s.%s+2|{Information}%s', kak_line, kak_column-utf8.len(word)+1, getKeys(count) ) )
+					table.insert( ranges, string.format( '%s.%s+2|{Information}%s', kak_line, kak_column-string.len(word)+1, getKeys(count) ) )
 				end
 			end
 			if #word ~= 0 then
 				count = count + 1
 				first_word = false
-				kak_column = kak_column + direction * utf8.len(word)
+				kak_column = kak_column + direction * string.len(word)
 			end
 		end
 		kak_line = kak_line + direction
