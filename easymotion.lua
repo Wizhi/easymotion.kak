@@ -107,6 +107,9 @@ local function markWords()
 		end
 		for i=loop_start, loop_end, direction do
 			word = line_words[i]
+			if first_word and utf8.len(word) == 1 then
+				count = count - 1
+			end
 			if not first_word and utf8.len(word) > 3 then
 				if direction == 1 then
 					table.insert( ranges, string.format( '%s.%s+2|{Information}%s', kak_line, kak_column, getKeys(count) ) )
