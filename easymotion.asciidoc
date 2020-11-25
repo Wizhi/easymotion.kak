@@ -1,0 +1,75 @@
+= easymotion.kak: plugin for simple word and line based movement
+
+This plugin crates two character long highlighting sequences for easy in-buffer
+movement.
+
+== Commands
+
+The plugin provides the following commands:
+*easymotion-j*::
+    Line-based downward movement
+*easymotion-k*::
+    Line-based upward movement
+*easymotion-w*::
+    Word-based forward movement
+*easymotion-b*::
+    Word-based backward movement
+
+== Install
+
+=== Manual
+
+Copy `easymotion.kak` and `easymotion.lua` to Your Kakaoune autoload directory.
+If You would like to read this documentation within Kakaoune itself, copy
+`easymotion.asciidoc` too.
+
+=== Plugin
+
+You can use a plugin manager like
+https://github.com/alexherbo2/plug.kak for installing.
+
+---
+plug easymotion https://git.sr.ht/~voroskoi/easymotion.kak
+---
+
+== Setup
+
+easymotion.kak does _not_ set up any mapping by default, however here are some
+recommendations:
+
+NOTE: The `<space>` after the `:` is not accidental, this way pressing those keys
+will not pollute Your command history.
+
+Using the easymotion user mode:
+
+---
+require-module easymotion
+map global normal <ű> ': enter-user-mode easymotion<ret>'
+---
+
+Or using direcly by remapping some Kakaoune keys:
+
+---
+require-module easymotion
+map global normal <j> ': easymotion-f<ret>'
+map global normal <k> ': easymotion-k<ret>'
+map global normal <w> ': easymotion-w<ret>'
+map global normal <b> ': easymotion-b<ret>'
+---
+
+== Options
+
+This plugin provides the follwing options:
+*easymotion_chars*::
+    A character string for specifying keys used for generation jump
+highlighters. This should be on the home row of your default keymap.
+
+NOTE: This sting should be long enough (20 chars) othervise there will be no enough key
+option for generating!
+
+== Usage
+
+Start an easymotion-command with a mapping or from the prompt. The plugin will
+highlight the jumping options.
+Take Your prefered jumping option by typing in those two letters and hit <ret>
+for executing the movement.
