@@ -12,16 +12,12 @@ do not have to calculate `count` numbers or hammer `j`, `k` or `w`, `b`.
 The plugin does not change Kakoune defaults at all. It does not provide
 any defaults, but You can find some advice regarding setting up in
 `easymotion.asciidoc`.
- - Every movement is done with Kakoune
- commands.  - Features a line-based and a word-based mode. (No `f` and
- `t` movements. I
-made `quickscope.kak` for that.)
- - Line mode use `j` and `k` keys with proper `count` values. You can
- use this
+ - Every movement is done with Kakoune commands.
+ - Features a line-based and a word-based mode. (No `f` and `t` movements. I made
+`quickscope.kak` for that.)
+ - Line mode use `j` and `k` keys with proper `count` values. You can use this
 method instead of relative line numbering.
- - Word mode moves with `w` and `b` keys. This plugin just highlights
- movement
-points.
+ - Word mode moves with `w` and `b` keys. This plugin just highlights movement points.
  - Provide easymotion user mode for better discover-ability.
 
 # Installing and Using
