@@ -47,7 +47,7 @@ require-module easymotion
 map global normal <ű> ': enter-user-mode easymotion<ret>'
 ---
 
-Or using direcly by remapping some Kakaoune keys:
+Or using directly by remapping some Kakaoune keys:
 
 ---
 require-module easymotion
@@ -59,7 +59,7 @@ map global normal <b> ': easymotion-b<ret>'
 
 == Options
 
-This plugin provides the follwing options:
+This plugin provides the following options:
 *easymotion_chars*::
     A character string for specifying keys used for generation jump
 highlighters. This should be on the home row of your default keymap.
