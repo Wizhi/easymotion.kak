@@ -4,7 +4,7 @@ declare-option -hidden str easymotion_window # for window content
 declare-option -hidden str easymotion_keys # XXX for on-key magic
 declare-option -hidden str easymotion_jump # store the counter for operations
 
-declare-option str easymotion_chars 'jfkdlsahgurieowpqzt'
+#declare-option str easymotion_chars 'jfkdlsahgurieowpqzt'
 
 provide-module easymotion %§
 

@@ -30,7 +30,7 @@ if os.getenv("kak_opt_extra_word_chars") then
 else
 	kak_extra_word_chars = ""
 end
-word_partition_pattern = '(%P*)([^%P' .. kak_extra_word_chars  .. ']+)(%P*)'
+word_partition_pattern = '([%P' .. kak_extra_word_chars .. ']*)([^%P' .. kak_extra_word_chars  .. ']+)([%P' .. kak_extra_word_chars .. ']*)'
 
 
 kak_timestamp = tonumber(arg[1])
