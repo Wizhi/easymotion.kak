@@ -38,6 +38,7 @@ define-command -hidden -params 2 easymotion-worker %{
     evaluate-commands %sh{
         # NOTE: comments below are intentional to make kakoune export them
         # kak_opt_easymotion_chars
+        # kak_opt_extra_word_chars
         printf %s "$kak_opt_easymotion_window" |lua "$kak_opt_easymotion_lua" "$kak_timestamp" "$kak_cursor_line" "$kak_cursor_column" "$1" "$2"
     }
     # It can not be a hook as it would be triggered on every prompt command

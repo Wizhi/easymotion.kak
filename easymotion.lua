@@ -25,6 +25,14 @@ if #arg ~= 5 then
 	os.exit(false)
 end
 
+if os.getenv("kak_opt_extra_word_chars") then
+	kak_extra_word_chars = os.getenv("kak_opt_extra_word_chars"):gsub(' ', '')
+else
+	kak_extra_word_chars = ""
+end
+word_partition_pattern = '(%P*)([^%P' .. kak_extra_word_chars  .. ']+)(%P*)'
+
+
 kak_timestamp = tonumber(arg[1])
 kak_line      = tonumber(arg[2])
 kak_column    = tonumber(arg[3])
@@ -50,7 +58,7 @@ local function partition(str)
 		--print(word, space)
 		--print(#word, #space)
 		-- a word without %p charachter
-		for pre, punc, post in string.gmatch ( word, '(%P*)(%p+)(%P*)' ) do
+		for pre, punc, post in string.gmatch ( word, word_partition_pattern ) do
 			-- a word with %p character
 			--print(pre, punc, post)
 			--print(#pre, #punc, #post)
