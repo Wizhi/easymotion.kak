@@ -99,9 +99,10 @@ local function markWords()
 		if direction == -1 then
 			if not first_line then
 				kak_column = string.len(line)
-			elseif kak_column > string.len(line) then -- XXX: remove?
+			elseif kak_column > string.len(line) then
 				-- started on trailing \n
 				kak_column = kak_column + direction
+				first_word = false
 			end
 		end
 		-- just reorder the words instead of reversing them:
