@@ -6,6 +6,7 @@ else
 	kak_easymotion_chars = "abcdefghijklmnopqrstuvwxyz"
 end
 
+-- Calculate `count` value for Kakoune from the two-char long input.
 local function getCount(jumper)
 	local counter = string.find(kak_easymotion_chars, string.sub(jumper, 1, 1) ) * #kak_easymotion_chars + string.find(kak_easymotion_chars, string.sub(jumper, 2, 2) ) - (#kak_easymotion_chars+1)
 	return counter
@@ -51,17 +52,14 @@ local function getKeys(counter)
 	return string.sub(kak_easymotion_chars, first, first)..string.sub(kak_easymotion_chars, scnd, scnd)
 end
 
+-- String partitioning function, creates words from lines
 local function partition(str)
 	local word_skip
 	local T = {}
 	for word, space in string.gmatch( str, '(%S*)(%s*)' ) do
-		--print(word, space)
-		--print(#word, #space)
-		-- a word without %p charachter
+		-- words separated by space
 		for pre, punc, post in string.gmatch ( word, word_partition_pattern ) do
-			-- a word with %p character
-			--print(pre, punc, post)
-			--print(#pre, #punc, #post)
+			-- a word with %p or kak_extra_word_chars charachter
 			word_skip = true
 			if #pre ~= 0 then table.insert(T, pre) end
 			if #punc ~= 0 then table.insert(T, punc) end
@@ -77,15 +75,15 @@ local function partition(str)
 		end
 		word_skip = false
 	end
-	--print(table.concat(T, '§'))
 	return T
 end
 
 local function markLines()
 	for k, v in ipairs(lines) do
 		if #v ~= 0 and k ~= 1 then
+			-- ignore first line and empty lines
 			local keys = getKeys(k-1)
-			--print(k, keys, v)
+			-- Using +0 shifts the whole line right so it remains readable
 			table.insert( ranges, string.format( '%s.1+0|{Information}%s', kak_line+(direction*k)-direction, keys) )
 		end
 	end
@@ -93,11 +91,12 @@ end
 
 local function markWords()
 	local count = 1
-	local first_line = true -- in backward mode first line starts at cursor position
-	local first_word = true -- do not highlight matches in current word
+	local first_line = true
+	local first_word = true -- do not highlight matches in first word
 	for _,line in ipairs(lines) do
 		if direction == -1 then
 			if not first_line then
+				-- in backward mode first line starts at cursor position
 				kak_column = string.len(line)
 			elseif kak_column > string.len(line) then
 				-- started on trailing \n
@@ -106,7 +105,8 @@ local function markWords()
 			end
 		end
 		-- just reorder the words instead of reversing them:
-		-- this way utf8.len() will work
+		-- 1) this way utf8.len() will work
+		-- 2) no need to reverse highlighting too
 		line_words = partition(line)
 		local loop_start = 1
 		local loop_end = #line_words
@@ -117,9 +117,12 @@ local function markWords()
 		for i=loop_start, loop_end, direction do
 			word = line_words[i]
 			if first_word and utf8.len(word) == 1 then
+				-- we are on first/last char of the word, so `b` and `w` will jump
+				-- to the next word immediatelly instead of selecting remaining part
 				count = count - 1
 			end
 			if not first_word and utf8.len(word) > 3 then
+				-- Do not higlight first word and short words (which messes up the buffer)
 				if direction == 1 then
 					table.insert( ranges, string.format( '%s.%s+2|{Information}%s', kak_line, kak_column, getKeys(count) ) )
 				else
@@ -127,6 +130,7 @@ local function markWords()
 				end
 			end
 			if #word ~= 0 then
+				-- do not count `\n` as word
 				count = count + 1
 				first_word = false
 				kak_column = kak_column + direction * string.len(word)
