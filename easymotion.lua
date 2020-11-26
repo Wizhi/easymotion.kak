@@ -127,9 +127,10 @@ local function markWords(mode)
 			if mode == "streak" then
 				if word:find(kak_pattern, 1, true) ~= fail then
 					if direction == 1 then
-						table.insert( ranges, string.format( '%s.%s+%d|{Information}%s', kak_line, kak_column, #kak_pattern, kak_pattern ) )
+						table.insert( ranges, string.format( '%s.%s+%d|{Information}%s', kak_line, kak_column, utf8.len(kak_pattern), kak_pattern ) )
 					else
-						table.insert( ranges, string.format( '%s.%s+%d|{Information}%s', kak_line, kak_column-word:len()-1, #kak_pattern, kak_pattern ) )
+						--print(word, kak_line, kak_column-#word+1, #word)
+						table.insert( ranges, string.format( '%s.%s+%d|{Information}%s', kak_line, kak_column-string.len(word)+1, utf8.len(kak_pattern), kak_pattern ) )
 					end
 				end
 			else
