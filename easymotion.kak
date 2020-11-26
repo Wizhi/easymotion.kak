@@ -74,13 +74,13 @@ define-command -hidden -params 0 streakHandler-bwd %{
     easymotion-backward streak %val{text} 
 }
 
-define-command -params 0 streak-forward %{
+define-command -params 0 easymotion-streak-forward %{
     prompt -on-change streakHandler-fwd 'streak→:' %{
         execute-keys </> %val{text} <ret>
     }
 }
 
-define-command -params 0 streak-backward %{
+define-command -params 0 easymotion-streak-backward %{
     prompt -on-change streakHandler-bwd 'streak←:' %{
         execute-keys <a-/> %val{text} <ret>
     }
@@ -112,6 +112,8 @@ map global easymotion -docstring %{easymotion line ↓} <j> ": easymotion-j<ret>
 map global easymotion -docstring %{easymotion line ↑} <k> ": easymotion-k<ret>"
 map global easymotion -docstring %{easymotion word →} <w> ": easymotion-w<ret>"
 map global easymotion -docstring %{easymotion word ←} <b> ": easymotion-b<ret>"
+map global easymotion -docstring %{easymotion streak →} <h> ": easymotion-streak-forward<ret>"
+map global easymotion -docstring %{easymotion streak ←} <l> ": easymotion-streak-backward<ret>"
 
 # XXX Remove these lines before release
 

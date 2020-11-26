@@ -181,7 +181,7 @@ else
 end
 
 if kak_mode == "streak" and #ranges == 1 then
-	command = command .. ";execute-keys <ret>"
+	command = command .. "; execute-keys <ret>; set-option buffer easymotion_ranges"
 end
 
 print(command)
