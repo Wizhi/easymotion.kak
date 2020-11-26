@@ -1,7 +1,3 @@
-# Warning
-
-`easymotion.kak` is alpha quality. There are _real_ bugs in it :-(
-
 # About
 
 `easymotion.kak` is a Kakoune plugin inspired by vim-easymotion

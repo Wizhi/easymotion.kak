@@ -71,5 +71,17 @@ option for generating!
 
 Start an easymotion-command with a mapping or from the prompt. The plugin will
 highlight the jumping options.
-Take Your prefered jumping option by typing in those two letters and hit <ret>
+Take Your preferred jumping option by typing in those two letters and hit <ret>
 for executing the movement.
+
+== Support
+
+Do not hesitate to send an e-mail to `~voroskoi/easymotion.kak@lists.sr.ht`.
+
+As an alternative You can register on `https://discuss.kakoune.com/` for a
+broader audience.
+
+== Bugs
+
+This software is perfect of course, but if You find an issue or would like to
+have some feature implemented feel free to send an e-mail to `~voroskoi/easymotion.kak@todo.sr.ht`
