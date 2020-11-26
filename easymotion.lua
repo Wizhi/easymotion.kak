@@ -18,8 +18,8 @@ if #arg == 1 then
 	os.exit(true)
 end
 
-if #arg ~= 5 then
-	print("Wrong argument number, exitting. Expected 5, got:", #arg)
+if #arg < 5 then
+	print("Wrong argument number, exitting. Expected 5 or 6, got:", #arg)
 	for key, value in ipairs(arg) do
 		print(key, value)
 	end
@@ -39,6 +39,9 @@ kak_line      = tonumber(arg[2])
 kak_column    = tonumber(arg[3])
 kak_mode      = tostring(arg[4])
 direction     = tonumber(arg[5])
+if kak_mode == "streak" then
+	kak_pattern   = tostring(arg[6])
+end
 
 -- Table for storing highlighting ranges
 ranges = {}
@@ -89,7 +92,7 @@ local function markLines()
 	end
 end
 
-local function markWords()
+local function markWords(mode)
 	local count = 1
 	local first_line = true
 	local first_word = true -- do not highlight matches in first word
@@ -121,12 +124,22 @@ local function markWords()
 				-- to the next word immediatelly instead of selecting remaining part
 				count = count - 1
 			end
-			if not first_word and utf8.len(word) > 3 then
-				-- Do not higlight first word and short words (which messes up the buffer)
-				if direction == 1 then
-					table.insert( ranges, string.format( '%s.%s+2|{Information}%s', kak_line, kak_column, getKeys(count) ) )
-				else
-					table.insert( ranges, string.format( '%s.%s+2|{Information}%s', kak_line, kak_column-string.len(word)+1, getKeys(count) ) )
+			if mode == "streak" then
+				if word:find(kak_pattern, 1, true) ~= fail then
+					if direction == 1 then
+						table.insert( ranges, string.format( '%s.%s+%d|{Information}%s', kak_line, kak_column, #kak_pattern, kak_pattern ) )
+					else
+						table.insert( ranges, string.format( '%s.%s+%d|{Information}%s', kak_line, kak_column-word:len()-1, #kak_pattern, kak_pattern ) )
+					end
+				end
+			else
+				if not first_word and utf8.len(word) > 3 then
+					-- Do not higlight first word and short words (which messes up the buffer)
+					if direction == 1 then
+						table.insert( ranges, string.format( '%s.%s+2|{Information}%s', kak_line, kak_column, getKeys(count) ) )
+					else
+						table.insert( ranges, string.format( '%s.%s+2|{Information}%s', kak_line, kak_column-string.len(word)+1, getKeys(count) ) )
+					end
 				end
 			end
 			if #word ~= 0 then
@@ -153,7 +166,9 @@ end
 if kak_mode == "lines" then
 	markLines()
 elseif kak_mode == "words" then
-	markWords()
+	markWords("easy")
+elseif kak_mode == "streak" then
+	markWords("streak")
 else
 	print("Wrong kak_mode. Expected 'lines' or 'words'.")
 	os.exit(false)
@@ -163,6 +178,10 @@ if #ranges > 0 then
 	command = "set-option buffer easymotion_ranges " .. kak_timestamp .. " " .. table.concat(ranges, ' ')
 else
 	command = "set-option buffer easymotion_ranges"
+end
+
+if kak_mode == "streak" and #ranges == 1 then
+	command = command .. ";execute-keys <ret>"
 end
 
 print(command)

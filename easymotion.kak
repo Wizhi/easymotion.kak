@@ -11,7 +11,7 @@ hook -group easymotion global ModeChange pop:prompt:normal %{
     remove-highlighter window/easymotion
 }
 
-define-command -hidden -params 1 easymotion-forward %{
+define-command -hidden -params 1.. easymotion-forward %{
     evaluate-commands -draft %{
         execute-keys <space> <semicolon> Gb Gl
         evaluate-commands %{
@@ -19,10 +19,10 @@ define-command -hidden -params 1 easymotion-forward %{
             set-option window easymotion_window %val{selection}
         }
     }
-    easymotion-worker %arg{@} 1
+    easymotion-worker %arg{1} 1 %arg{2}
 }
 
-define-command -hidden -params 1 easymotion-backward %{
+define-command -hidden -params 1.. easymotion-backward %{
     evaluate-commands -draft %{
         execute-keys <space> <semicolon> Gt Gh
         evaluate-commands %{
@@ -30,15 +30,15 @@ define-command -hidden -params 1 easymotion-backward %{
             set-option window easymotion_window %val{selection}
         }
     }
-    easymotion-worker %arg{@} -1
+    easymotion-worker %arg{1} -1 %arg{2}
 }
 
-define-command -hidden -params 2 easymotion-worker %{
+define-command -hidden -params 2.. easymotion-worker %{
     evaluate-commands %sh{
         # NOTE: comments below are intentional to make kakoune export them
         # kak_opt_easymotion_chars
         # kak_opt_extra_word_chars
-        printf %s "$kak_opt_easymotion_window" |lua "$kak_opt_easymotion_lua" "$kak_timestamp" "$kak_cursor_line" "$kak_cursor_column" "$1" "$2"
+        printf %s "$kak_opt_easymotion_window" |lua "$kak_opt_easymotion_lua" "$kak_timestamp" "$kak_cursor_line" "$kak_cursor_column" "$1" "$2" "$3"
     }
     # It can not be a hook as it would be triggered on every prompt command
     try %{ add-highlighter window/easymotion replace-ranges 'easymotion_ranges' }
@@ -63,6 +63,26 @@ define-command -hidden -params 1 easymotion-doJump %{
             printf "set-option window easymotion_jump %s\n" $(lua "$kak_opt_easymotion_lua" "$kak_text")
         }
         execute-keys %opt{easymotion_jump} %arg{1}
+    }
+}
+
+define-command -hidden -params 0 streakHandler-fwd %{
+    easymotion-forward streak %val{text} 
+}
+
+define-command -hidden -params 0 streakHandler-bwd %{
+    easymotion-backward streak %val{text} 
+}
+
+define-command -params 0 streak-forward %{
+    prompt -on-change streakHandler-fwd 'streak→:' %{
+        execute-keys </> %val{text} <ret>
+    }
+}
+
+define-command -params 0 streak-backward %{
+    prompt -on-change streakHandler-bwd 'streak←:' %{
+        execute-keys <a-/> %val{text} <ret>
     }
 }
 
