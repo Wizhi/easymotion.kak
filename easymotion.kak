@@ -45,7 +45,6 @@ define-command -hidden -params 2 easymotion-worker %{
 }
 
 define-command -hidden -params 0 promptHandler %{
-    echo -debug %val{text}
     evaluate-commands %sh{
         if [ ${#kak_text} -ge 2 ]; then
             printf "execute-keys %s\n" '<ret>'
@@ -56,7 +55,6 @@ define-command -hidden -params 0 promptHandler %{
 }
 
 define-command -hidden -params 1 easymotion-doJump %{
-    # XXX: -on-change: autojump: jump when 2 keys pressed
     # XXX: -on-change: limit highlights based on input
     prompt -on-change promptHandler 'easymotion:' %{
         evaluate-commands %sh{
