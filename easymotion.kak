@@ -112,8 +112,8 @@ map global easymotion -docstring %{easymotion line ↓} <j> ": easymotion-j<ret>
 map global easymotion -docstring %{easymotion line ↑} <k> ": easymotion-k<ret>"
 map global easymotion -docstring %{easymotion word →} <w> ": easymotion-w<ret>"
 map global easymotion -docstring %{easymotion word ←} <b> ": easymotion-b<ret>"
-map global easymotion -docstring %{easymotion streak →} <h> ": easymotion-streak-forward<ret>"
-map global easymotion -docstring %{easymotion streak ←} <l> ": easymotion-streak-backward<ret>"
+map global easymotion -docstring %{easymotion streak →} <l> ": easymotion-streak-forward<ret>"
+map global easymotion -docstring %{easymotion streak ←} <h> ": easymotion-streak-backward<ret>"
 
 # XXX Remove these lines before release
 
