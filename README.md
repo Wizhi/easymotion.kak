@@ -22,7 +22,7 @@ method instead of relative line numbering.
 
 # Installing and Using
 
-See `easymotion.asciidoc` file.
+See [easymotion.asciidoc](https://git.sr.ht/~voroskoi/easmymotion.kak/tree/master/easymotion.asciidoc) file.
 
 # Ideas
  - [vim-easymotion](https://github.com/easymotion/vim-easymotion)

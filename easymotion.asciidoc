@@ -14,6 +14,10 @@ The plugin provides the following commands:
     Word-based forward movement
 *easymotion-b*::
     Word-based backward movement
+*easymotion-streak-forward*::
+    Streak forward
+*easymotion-streak-backward*::
+    Streak backward
 
 == Install
 
@@ -81,8 +85,11 @@ option for generating!
 
 Start an easymotion-command with a mapping or from the prompt. The plugin will
 highlight the jumping options.
-Take Your preferred jumping option by typing in those two letters and hit <ret>
-for executing the movement.
+Take Your preferred jumping option by typing in those two letters for executing the movement.
+
+In streak mode You just start typing the word you want to reach, the plugin
+will instatly highlight matching results. At first unambibous result the plugin
+jump automatically.
 
 == Support
 
