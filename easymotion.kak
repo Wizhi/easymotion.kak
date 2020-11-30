@@ -115,9 +115,5 @@ map global easymotion -docstring %{easymotion word ←} <b> ": easymotion-b<ret>
 map global easymotion -docstring %{easymotion streak →} <l> ": easymotion-streak-forward<ret>"
 map global easymotion -docstring %{easymotion streak ←} <h> ": easymotion-streak-backward<ret>"
 
-# XXX Remove these lines before release
-
-map global normal <ű> ': enter-user-mode easymotion<ret>'
-
 §
 

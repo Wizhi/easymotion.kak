@@ -171,7 +171,7 @@ elseif kak_mode == "words" then
 elseif kak_mode == "streak" then
 	markWords("streak")
 else
-	print("Wrong kak_mode. Expected 'lines' or 'words'.")
+	print("Wrong kak_mode. Expected 'lines',  'words' or 'streak'.")
 	os.exit(false)
 end
 
