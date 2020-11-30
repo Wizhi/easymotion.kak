@@ -57,6 +57,16 @@ map global normal <w> ': easymotion-w<ret>'
 map global normal <b> ': easymotion-b<ret>'
 ---
 
+Via a plugin manager, so it will not brake Your keys when there is an error
+while loading the plugin:
+
+---
+plug easymotion https://git.sr.ht/~voroskoi/easymotion.kak %{
+    map global normal <w> ': easymotion-streak-forward<ret>'
+    map global normal <b> ': easymotion-streak-backward<ret>'
+}
+---
+
 == Options
 
 This plugin provides the following options:
