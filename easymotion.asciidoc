@@ -21,6 +21,8 @@ The plugin provides the following commands:
 
 == Install
 
+easymotion.kak uses `utf8` module which was introduced in lua>=5.3 version.
+
 === Manual
 
 Copy `easymotion.kak` and `easymotion.lua` to Your Kakaoune autoload directory.
