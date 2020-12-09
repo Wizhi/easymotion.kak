@@ -182,6 +182,9 @@ else
 end
 
 if kak_mode == "streak" and #ranges == 1 then
+	-- replace the line below with the following once this fix is released
+	-- https://github.com/mawww/kakoune/commit/586f79c30de2185a18f5f769e625184dd10fa40f
+	-- command = command .. "; execute-keys <ret>; set-option buffer easymotion_ranges"
 	command = command .. "; hook -once -group easymotion global PromptIdle .* %{ execute-keys <ret> }; set-option buffer easymotion_ranges"
 end
 
