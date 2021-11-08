@@ -93,6 +93,12 @@ In streak mode You just start typing the word you want to reach, the plugin
 will instatly highlight matching results. At first unambibous result the plugin
 jump automatically.
 
+== Customization
+
+This plugin provides the following faces:
+*EasyMotion*::
+    Applied to all generated jump highlighters. Defaults to `+Information+`.
+
 == Support
 
 Do not hesitate to send an e-mail to `~voroskoi/easymotion.kak@lists.sr.ht`.

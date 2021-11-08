@@ -7,6 +7,8 @@ declare-option str easymotion_chars 'jfkdlsahgurieowpqzt'
 
 provide-module easymotion %§
 
+set-face global EasyMotion Information
+
 hook -group easymotion global ModeChange pop:prompt:normal %{
     remove-highlighter window/easymotion
 }

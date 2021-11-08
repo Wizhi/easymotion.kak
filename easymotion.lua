@@ -87,7 +87,7 @@ local function markLines()
 			-- ignore first line and empty lines
 			local keys = getKeys(k-1)
 			-- Using +0 shifts the whole line right so it remains readable
-			table.insert( ranges, string.format( '%s.1+0|{Information}%s', kak_line+(direction*k)-direction, keys) )
+			table.insert( ranges, string.format( '%s.1+0|{EasyMotion}%s', kak_line+(direction*k)-direction, keys) )
 		end
 	end
 end
@@ -127,19 +127,19 @@ local function markWords(mode)
 			if mode == "streak" then
 				if word:find(kak_pattern, 1, true) ~= fail then
 					if direction == 1 then
-						table.insert( ranges, string.format( '%s.%s+%d|{Information}%s', kak_line, kak_column, utf8.len(kak_pattern), kak_pattern ) )
+						table.insert( ranges, string.format( '%s.%s+%d|{EasyMotion}%s', kak_line, kak_column, utf8.len(kak_pattern), kak_pattern ) )
 					else
 						--print(word, kak_line, kak_column-#word+1, #word)
-						table.insert( ranges, string.format( '%s.%s+%d|{Information}%s', kak_line, kak_column-string.len(word)+1, utf8.len(kak_pattern), kak_pattern ) )
+						table.insert( ranges, string.format( '%s.%s+%d|{EasyMotion}%s', kak_line, kak_column-string.len(word)+1, utf8.len(kak_pattern), kak_pattern ) )
 					end
 				end
 			else
 				if not first_word and utf8.len(word) > 3 then
 					-- Do not higlight first word and short words (which messes up the buffer)
 					if direction == 1 then
-						table.insert( ranges, string.format( '%s.%s+2|{Information}%s', kak_line, kak_column, getKeys(count) ) )
+						table.insert( ranges, string.format( '%s.%s+2|{EasyMotion}%s', kak_line, kak_column, getKeys(count) ) )
 					else
-						table.insert( ranges, string.format( '%s.%s+2|{Information}%s', kak_line, kak_column-string.len(word)+1, getKeys(count) ) )
+						table.insert( ranges, string.format( '%s.%s+2|{EasyMotion}%s', kak_line, kak_column-string.len(word)+1, getKeys(count) ) )
 					end
 				end
 			end
